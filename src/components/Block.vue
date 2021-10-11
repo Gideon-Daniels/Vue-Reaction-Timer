@@ -1,5 +1,5 @@
 <template>
-  <div class="block" v-if="showBlock">
+  <div class="block" v-if="showBlock" @click="stopTimer">
       Click me
   </div>
 </template>
@@ -10,17 +10,30 @@ export default {
     data() {
         return {
             showBlock: false,
+            timer: null,  // store set interval
+            reactionTime: 0
         }
     },
     // cycle hook
     mounted() {
-   
         // display block after delay
         setTimeout(() => {
             this.showBlock = true
-            console.log(this.delay)
+            this.startTimer()
         }, this.delay)
     },
+    methods: {
+        startTimer() {
+            this.timer = setInterval(() => {
+                this.reactionTime += 10
+            }, 10)
+        },
+        stopTimer() {
+            // stop reaction time
+            clearInterval(this.timer)
+            this.$emit('end', this.reactionTime)
+        },
+    }
 }
 </script>
 
